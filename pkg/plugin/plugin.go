@@ -9,7 +9,7 @@ import (
 
 	"github.com/containernetworking/cni/pkg/skel"
 	"github.com/containernetworking/cni/pkg/types"
-	"github.com/containernetworking/cni/pkg/types/current"
+	current "github.com/containernetworking/cni/pkg/types/100"
 	"github.com/containernetworking/plugins/pkg/ns"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
@@ -149,7 +149,7 @@ func (p *Plugin) CmdAdd(args *skel.CmdArgs) error {
 		log.Error().Msgf("failed to update DeviceInfo %v.", err)
 		// this step is not critical for CNI operation, log error and continue
 	}
-	return types.PrintResult(cmdCtx.result, current.ImplementedSpecVersion)
+	return types.PrintResult(cmdCtx.result, pluginConf.CNIVersion)
 }
 
 // updateDeviceInfo updates CNIDeviceInfoFile file with information
@@ -219,6 +219,9 @@ func (p *Plugin) updateDeviceInfo(cmdCtx *cmdContext) error {
 	if err != nil {
 		return fmt.Errorf("failed to marshal DeviceInfo to JSON %q", err)
 	}
+	//nolint:gosec
+	// save with same permissions as https://github.com/k8snetworkplumbingwg/network-attachment-definition-client
+	// utils.saveDeviceInfo
 	err = os.WriteFile(cmdCtx.pluginConf.RuntimeConfig.CNIDeviceInfoFile, bytes, 0444)
 	if err != nil {
 		return fmt.Errorf("failed to update CNIDeviceInfoFile %q", err)
