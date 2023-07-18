@@ -25,8 +25,6 @@ linters-settings:
     min-complexity: 30
   goimports:
     local-prefixes: github.com/k8snetworkplumbingwg/accelerated-bridge-cni
-  golint:
-    min-confidence: 0
   gomnd:
     settings:
       mnd:
@@ -55,7 +53,6 @@ linters:
   disable-all: true
   enable:
     - bodyclose
-    - deadcode
     - depguard
     - dogsled
     - dupl
@@ -77,15 +74,12 @@ linters:
     - nakedret
     - prealloc
     - revive
-    - rowserrcheck
     - staticcheck
-    - structcheck
     - stylecheck
     - typecheck
     - unconvert
     - unparam
     - unused
-    - varcheck
     - whitespace
 
 issues:
